@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load humanize %} 
+
+{% block content-header %}
+<div class="card-header">
+  <div class="card-tools">
+    <a href="{% url 'invoice-update' object.id %}" class="btn btn-tool">
+      <i class="fas fa-edit"></i>
+    </a>
+    <a href="{% url 'invoice-delete' object.id %}" class="btn btn-tool">
+      <i class="fas fa-times"></i>
+    </a>
+  </div>
+</div>
+{% endblock content-header %}
+
+
+
+{% block content %}
+
+<div class="row">
+  <div class="col-sm-4">
+    <h3>{{ object }} </h3>
+    <h5>{{ object.session }} </h5>
+    <h5>{{ object.term }} </h5>
+    <h5>{{ object.class_for }} </h5>
+    <h6>Durum: {{ object.get_status_display }} </h6>
+    <hr>
+    <div>
+      <h4>Kalan Ödeme: {{ object.balance | intcomma }} TL</h4>
+    </div>
+  </div>
+  <div class="col-sm-8">
+    <table class="table table-sm table-bordered">
+      Fatura Ayrıntısı</br>
+      <thead class="thead-light">
+        <tr>
+          <th>S/N</th>
+          <th>Tanım</th>
+          <th>Miktar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td>{{ forloop.counter }} </td>
+          <td>{{ item.description }} </td>
+          <td>{{ item.amount }} TL </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td></td>
+          <td>
+            Ek Ödemeler Toplamı</td>
+          <td>{{ object.amount_payable | intcomma}} TL</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>Kayıt Ücreti</td>
+          <td>{{ object.balance_from_previous_term | intcomma }} TL</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>Toplam Ücet</td>
+          <td>{{ object.total_amount_payable | intcomma}}TL</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>Yapılan Toplam Ödeme</td>
+          <td>{{ object.total_amount_paid | intcomma}} TL</td>
+        </tr>
+
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<hr>
+<h5>Ödeme Geçmişi</h5>
+<table class="table table-bordered table-sm">
+  <thead class="thead-light">
+    <tr>
+      <th>S/N</th>
+      <th>Ödenen Miktar</th>
+      <th>Ödeme Tarihi</th>
+      <th>Açıklama</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for receipt in receipts %}
+    <tr>
+      <td>{{ forloop.counter }} </td>
+      <td>{{ receipt.amount_paid }} TL</td>
+      <td>{{ receipt.date_paid }}</td>
+      <td>{{ receipt.comment }}</td>
+      <td><a href="{% url 'receipt-detail' object.id %}"> Makbuz</a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock content %}

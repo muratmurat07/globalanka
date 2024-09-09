@@ -1,0 +1,146 @@
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <img src="/static/img/uzman-logo.jpeg" class="rounded float-left" alt="...">
+    </div>
+    <div class="col-7">
+    <br><br>
+      <p class="h3">ÖZEL UZMAN MESLEKİ YETERLİLİK KURSU</p>
+<p class="h3">KAYIT SÖZLEŞMESİ</p>
+    </div>
+    <div class="col">
+      <img src="/static/img/meb-logo_mini.png" class="rounded float-right" alt="...">
+    </div>
+  </div> 
+</div>
+<br> 
+  <table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th colspan="2" scope="col">ÖĞRENCİNİN BİLGİLERİ</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+      <td>TC Kimlik Numarası:</td>
+      <td>{{ ogrenci.tc }}</td>
+    </tr>
+    <tr>
+    <p>
+      <td>Adı Soyadı:</td>
+      <td>{{ ogrenci.adi }}</td>
+    </tr>
+    <tr>
+      <td>Baba Adı:</td>
+      <td>{{ ogrenci.baba_adi }}</td>
+    </tr>
+    <tr>
+      <td>Doğum Yeri:</td>
+      <td>{{ ogrenci.dogum_yeri }}</td>
+    </tr>
+    <tr>
+      <td>Doğum Tarihi:</td>
+      <td>{{ dogum_tarihi.strftime("%d/%m/%Y") }}</td> 
+    </tr>
+    <tr>
+      <td>Öğrenim Durumu:</td>
+      <td>{{ ogrenci.egitim_durumu }}</td>
+    </tr>
+    <tr>
+      <td>Telefon No:</td>
+      <td>{{ ogrenci.tel}}</td>
+    </tr>
+        <tr>
+      <td>Kayıtlı Olduğu Kurs:</td>
+      <td>{{ ogrenci.kursu.program.adi}} </td>
+    </tr>
+    <tr>
+    <td>Kurs Dönemi:</td>
+      <td>{{ ogrenci.kursu.haftaici_hafta_sonu}}-{{ ogrenci.kursu.gunduz_aksam}}</td>
+    </tr>
+
+    <tr>
+      <td>Kurs Başvuru Tarihi:</td>
+      <td>{{ basvuru_tarihi.strftime("%d/%m/%Y") }}</td>
+    </tr>
+    <tr>
+      <td>Adres:</td>
+      <td>{{ ogrenci.adres }}</td>
+    </tr>
+    <tr>
+      <td>Kurs Ücreti:</td>
+      <td>{{ ogrenci.kurs_ucreti }}0 TL</td>
+    </tr>
+    <tr>
+      <td>Taksit Sayısı:</td>
+      <td>{{ ogrenci.taksit_sayisi }}</td>
+    </tr>
+        <tr>
+      <td>Durumu:</td>
+      {% if ogrenci.durum == 0 %}
+      <td>Aktif Öğrenci</td>
+        {% else %}
+        <td>Mezun Öğrenci</td>
+        {% endif %}
+    </tr>
+    <tr>
+      <td>Açıklama:</td>
+      <td>{{ ogrenci.aciklama }}</td>
+    </tr>
+     </tbody>
+</table>
+
+<br>
+  <table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col" class="text-left">Öğrenci Adı Soyadı</th>
+      <th scope="col">Ödeme Tutarı</th>
+      <th scope="col">Gelir Türü</th>
+      <th scope="col">Ödeme Açıklaması</th>
+      <th scope="col">Ödeme Tarihi</th>
+    </tr>
+  </thead>
+  <h3>Ödeme Bilgileri</h3>
+  <tbody>
+  {% for gelir in gelirler %}
+    <tr>
+      <td class="text-left">{{ gelir.ogrencinin_adi.adi }}</td>
+      <td>{{ gelir.tutari}}0 TL</td>
+      <td>{{ gelir.turu}}</td>
+      <td>{{ gelir.aciklama}}</td>
+      <th>{{ gelir.tarihi[8:10]}}/{{ gelir.tarihi[5:7]}}/{{ gelir.tarihi[0:4]}}</th>
+    </tr>
+    {% endfor %}
+    </table>
+    <table class="table">
+    <tr>
+    <th scope="col" class="text-right">Yapılan Ödeme :</th>
+    <th scope="col" class="text-right">{{ gelir_toplami }}0 TL   </th>
+    </tr>
+    <th  scope="col" class="text-right">Kalan Ödeme :</th>
+    <th scope="col" class="text-right">{{ ogrenci.kurs_ucreti- gelir_toplami }}0 TL</th>
+    </tr>
+
+    </table>
+
+    <br>
+     <p class="text-justify">
+   Kayıt Formu yukardaki bilgiler doğrultusunda kursiyer ve kurum arasında imzalanmıştır.
+   Kayıt yapıldıktan sonra kayıt iptali yapılmak istenildiği takdirde <b>Özel Öğretim Kurumları Yönetmeliğine</b> göre kursiyer kayıt olduğu tutarın %10 
+   nu ve katıldığı kadar ders ücretini ödemek zorundadır.   
+    </p>
+
+   <div class="row">
+    <div class="col">
+      <p class="text-left">
+  Kursiyer/Veli
+ </p>
+    </div>
+    <div class="col">
+      <p class="text-right">Kurum Yetkilisi : {{ user.first_name }}</p>
+    </div>
+  </div>
+</div>
+</div>

@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}GÖRÜŞMELER{% endblock title %}
+
+{% block breadcrumb %}
+<a class="btn btn-primary" href="{% url 'call-create' %}"><i
+    class="fas fa-plus"></i> Görüşme Ekle</a>
+{% endblock breadcrumb %}
+
+{% block content %}
+  <table id="calltable" class="table table-bordered table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th>S/N</th>
+        <th>Adı Soyadı</th>
+        <th>Cinsiyeti</th>
+        <th>Cep Telefonu</th>
+        <th>Görüşme Tarihi</th>
+        <th>Verilen Ücret</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for call in object_list %}
+        <tr class='clickable-row' data-href="{% url 'call-detail' call.id %}">
+          <td>{{ forloop.counter }}</td>
+          <td>{{ call.firstname }} {{ call.surname }}</td>
+          <td>{{ call.get_gender_display }}</td>
+          <td>{{ call.mobile_number }}</td>
+          <td>{{ call.date_of_interview }}</td>
+          <td>{{ call.other_name }},00 TL</td>
+        </tr>
+      {% endfor %}
+
+    </tbody>
+  </table>
+{% endblock content %}
+
+{% block morejs %}
+<script>
+   $('#calltable').DataTable({
+     language: {
+       sEmptyTable: "Tabloda veri bulunmuyor",
+       sInfo: "_TOTAL_ kayıttan _START_ - _END_ arası görüntüleniyor",
+       sInfoEmpty: "Kayıt yok",
+       sInfoFiltered: "(_MAX_ kayıttan filtrelendi)",
+       sInfoPostFix: "",
+       sLengthMenu: "_MENU_ kayıt göster",
+       sLoadingRecords: "Yükleniyor...",
+       sProcessing: "İşleniyor...",
+       sSearch: "Ara:",
+       sZeroRecords: "Eşleşen kayıt bulunamadı",
+       oPaginate: {
+         sFirst: "İlk",
+         sLast: "Son",
+         sNext: "Sonraki",
+         sPrevious: "Önceki"
+       },
+       oAria: {
+         sSortAscending: ": artan sütun sıralamasını aktifleştir",
+         sSortDescending: ": azalan sütun sıralamasını aktifleştir"
+       }
+     }
+   });
+</script>
+{% endblock morejs %}

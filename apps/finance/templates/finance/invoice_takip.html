@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}ÖDEME TAKİBİ{% endblock title %}
+
+{% block content %}
+  <div class="table-responsive">
+    <table id="invoicetable" class="table table-bordered table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th>S/N</th>
+          <th>Öğrenci</th>
+          <th>Kursu Dönem</th>
+          <th>Toplam Tutar</th>
+          <th>Ödenen Tutar</th>
+          <th>Bakiye</th>
+          <th>Son Ödeme Tarihi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for invoice in object_list %}
+          <tr class="clickable-row" data-href="{% url 'invoice-detail' invoice.id %}" 
+              data-last-payment-date="{% if invoice.receipt_set.exists %}{{ invoice.receipt_set.latest.date_paid|date:"Y-m-d" }}{% else %}none{% endif %}">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ invoice }}</td>
+            <td>{{ invoice.class_for }}</td>
+            <td>{{ invoice.total_amount_payable | intcomma }} TL</td>
+            <td>{{ invoice.total_amount_paid | intcomma }} TL</td>
+            <td>{{ invoice.balance | intcomma }} TL</td>
+            <td>
+              {% if invoice.receipt_set.exists %}
+                {{ invoice.receipt_set.latest.date_paid|date:"d-m-Y" }}
+              {% else %}
+                Ödeme Yok
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
+
+{% block morejs %}
+<script>
+  $(document).ready(function() {
+    $('#invoicetable').DataTable({
+      language: {
+        url: 'https://cdn.datatables.net/plug-ins/1.10.22/i18n/Turkish.json'
+      }
+    });
+
+    // Renkleri belirle
+    const today = new Date();
+    $('#invoicetable tbody tr').each(function() {
+      const lastPaymentDate = $(this).data('last-payment-date');
+      const oneMonthAgo = new Date();
+      oneMonthAgo.setMonth(today.getMonth() - 1);
+
+      if (lastPaymentDate === 'none') {
+        $(this).addClass('table-warning'); // Ödeme Yok için sarı
+      } else {
+        const lastPayment = new Date(lastPaymentDate);
+        if (lastPayment < oneMonthAgo) {
+          $(this).addClass('table-danger'); // 1 ay geçmişse kırmızı
+        }
+      }
+    });
+  });
+</script>
+{% endblock morejs %}

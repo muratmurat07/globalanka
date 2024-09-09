@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<div class="container">
+  <div class="row text-center">
+    <div class="col">
+      <img src="{% static 'dist/img/login.png' %}" width="150" class="rounded float-center" alt="...">
+    </div>
+    <div class="col-7">
+      <br><br>
+      <p class="h3">ÖZEL UZMAN MESLEKİ YETERLİLİK KURSU</p>
+      <p class="h3">KAYIT SÖZLEŞMESİ</p>
+    </div>
+    <div class="col">
+      <img src="{% static 'dist/img/meblogo.png' %}" width="150" class="rounded float-center" alt="...">
+    </div>
+  </div> 
+</div>
+<br> <br> <br> <br> 
+
+<div class="container">
+  <table class="table table-striped">
+    <thead class="thead-dark text-center">
+      <tr>
+        <th>BİLGİLER</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>TC Kimlik Numarası</td>
+        <td>{{ object.registration_number }}</td>
+      </tr>
+      <tr>
+        <td>Adı Soyadı</td>
+        <td>{{ object.firstname }} {{ object.surname }}</td>
+      </tr>
+      <tr>
+        <td>Öğrenim Durumu</td>
+        <td>{{ object.gender }}</td>
+      </tr>
+      <tr>
+        <td>Cep Telefonu</td>
+        <td>{{ object.parent_mobile_number }}</td>
+      </tr>
+      <tr>
+        <td>Kayıt Olduğu Kurs</td>
+        <td>
+          {% for payment in payments %}
+            {{ payment.class_for }}{% if not forloop.last %} - {% endif %}
+          {% endfor %}
+        </td>
+      </tr>
+      <tr>
+        <td>Kurs Başvuru Tarihi</td>
+        <td>{{ object.date_of_admission }}</td>
+      </tr>
+      <tr>
+        <td>Adres</td>
+        <td>{{ object.address }}</td>
+      </tr>
+      <tr>
+        <td>Kurs Ücreti</td>
+        <td>{{ total_amount_payable | intcomma }} TL</td>
+      </tr>
+      <tr>
+        <td>Taksit Sayısı</td>
+        <td>{{ object.other_name }} Taksit</td>
+      </tr>
+      <tr>
+        <td>Doğum Tarihi</td>
+        <td>{{ object.date_of_birth }}</td>
+      </tr>
+      <tr>
+        <td>Açıklama</td>
+        <td>{{ object.others }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <h4>Fatura/Ödeme Geçmişi</h4>
+  {% if payments %}
+    <table class="table table-sm table-bordered table-hover">
+      <thead class="thead-light">
+        <tr>
+          <th>Borç Dönemi</th>
+          <th>Toplam Borç</th>
+          <th>Yapılan Ödeme</th>
+          <th>Kalan Ödeme</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for payment in payments %}
+          <tr class='clickable-row' data-href="{% url 'invoice-detail' payment.id %}">
+            <td>{{ payment.class_for }} - {{ payment.session }} </td>
+            <td>{{ payment.total_amount_payable | intcomma }} TL</td>
+            <td>{{ payment.total_amount_paid | intcomma }} TL</td>
+            <td>{{ payment.balance | intcomma }} TL</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>{{ object }} henüz ödeme yapmamıştır.</p>
+  {% endif %}
+  <br><br><br><br>
+
+  <p class="text-justify">
+    Kayıt Formu yukardaki bilgiler doğrultusunda kursiyer ve kurum arasında imzalanmıştır.
+    Kayıt yapıldıktan sonra kayıt iptali yapılmak istenildiği takdirde <b>Özel Öğretim Kurumları Yönetmeliğine</b> göre kursiyer kayıt olduğu tutarın %10 
+    nu ve katıldığı kadar ders ücretini ödemek zorundadır.
+  </p>
+  <br><br><br>
+  <div class="row">
+    <div class="col"><p class="text-left">Kursiyer: {{ object.firstname }} {{ object.surname }}</p></div>
+    <div class="col">
+      <p class="text-right">Kurum Yetkilisi: Hasime DİKİNE</p>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}

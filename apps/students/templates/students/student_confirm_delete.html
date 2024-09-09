@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+{% endblock title %}
+
+
+{% block content %}
+
+<form action="" method="POST">
+  {% csrf_token %}
+
+  <div class="alert">
+    <p>"{{ object }}" ı silmek istediğinizden emin misiniz?</p>
+    <p>Bu öğrenciye eklenen tüm içerikte silinecek!</p>
+  </div>
+
+  <input type="submit" class="btn btn-primary" value="Öğrenciyi Sil">
+
+</form>
+
+
+{% endblock content %}

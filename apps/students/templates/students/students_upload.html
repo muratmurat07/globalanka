@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+  TOPLU ÖĞRENCİ YÜKLEME
+{% endblock title %}
+
+
+{% block content %}
+
+  <div class="col alert alert-info">
+    <h5>Instruction</h5>
+    <p>Please <a href="{% url 'download-csv' %}">Excell dosyasını buradan indirin.</a>. Dosyayı doldurun ve aynı dosyayı bu sayfaya geri yükleyin. İLK SATIRDA DEĞİŞİKLİK YAPMAYIN</p>
+  </div>
+
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% include 'corecode/form_snippet.html' %}
+
+    <input type="submit" class="btn btn-success" value="YÜKLE">
+  </form>
+
+{% endblock content %}

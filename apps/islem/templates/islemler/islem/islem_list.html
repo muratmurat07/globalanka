@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}İŞLEMLER{% endblock title %}
+
+{% block breadcrumb %}
+<a class="btn btn-primary" href="{% url 'islem-create' %}"><i class="fas fa-plus"></i> Yeni İşlem</a>
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="table-responsive">
+    <table id="islemtable" class="table table-bordered table-hover" data-page-length='100'>
+      <thead class="thead-light">
+        <tr>
+          <th>S/N</th>
+          <th>Müşteri</th>
+          <th>Uzman</th>
+          <th>Müşteri Temsilcisi</th>
+          <th>İşlem</th>
+          <th>İşlem Tarihi</th>
+          <th>İşlem Ücreti</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        {% for islem in object_list %}
+          <tr class='clickable-row' data-href="{% url 'islem-detail' islem.id %}">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ islem.musteri }}</td>
+            <td>{{ islem.islem_yapan }}</td>
+            <td>{{ islem.takip_eden }}</td>
+            <td>{{ islem.islem_tipi }}</td>
+            <td>{{ islem.islem_tarihi }}</td>
+            <td>{{ islem.toplam_borc }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
+
+{% block morejs %}
+<script>
+  $('#islemtable').DataTable({
+    language: {
+      sEmptyTable: "Tabloda veri bulunmuyor",
+      sInfo: "_TOTAL_ kayıttan _START_ - _END_ arası görüntüleniyor",
+      sInfoEmpty: "Kayıt yok",
+      sInfoFiltered: "(_MAX_ kayıttan filtrelendi)",
+      sInfoPostFix: "",
+      sLengthMenu: "_MENU_ kayıt göster",
+      sLoadingRecords: "Yükleniyor...",
+      sProcessing: "İşleniyor...",
+      sSearch: "Ara:",
+      sZeroRecords: "Eşleşen kayıt bulunamadı",
+      oPaginate: {
+        sFirst: "İlk",
+        sLast: "Son",
+        sNext: "Sonraki",
+        sPrevious: "Önceki"
+      },
+      oAria: {
+        sSortAscending: ": artan sütun sıralamasını aktifleştir",
+        sSortDescending: ": azalan sütun sıralamasını aktifleştir"
+      }
+    }
+  });
+</script>
+{% endblock morejs %}

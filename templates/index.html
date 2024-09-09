@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+
+
+{% block content %}
+<h3 style="text-align: center;">ÖĞRENCİ İSTATİSTİKLERİ</h3>
+<table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">Aktif Öğrenci Sayısı : </th>
+      <th scope="col">{{ active_students }} KİŞİ</th>
+    </tr>
+    <tr>
+      <th scope="col">Mezun Öğrenci Sayısı : </th>
+      <th scope="col">{{ inactive_students }} KİŞİ</th>
+    </tr>
+    <tr>
+      <th scope="col">Toplam Öğrenci Sayısı : </th>
+      <th scope="col">{{ total_students }} KİŞİ</th>
+    </tr>
+  </thead>
+</table>
+
+<div style="height: 20px;"></div>
+
+<table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">Bu Ay Kaydolan Öğrenci Sayısı : </th>
+      <th scope="col">{{ students_registered_this_month }} KİŞİ</th>
+    </tr>
+  </thead>
+</table>
+
+<div style="height: 20px;"></div>
+<h3 style="text-align: center;">MUHASEBE İSTATİSTİKLERİ</h3>
+<table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">Toplam Alacak</th>
+      <th scope="col">Yapılan Ödeme</th>
+      <th scope="col">Kalan Alacak</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{ total_debt | intcomma }} TL</td>
+      <td>{{ total_paid | intcomma }} TL</td>
+      <td>{{ total_balance | intcomma }} TL</td>
+    </tr>
+  </tbody>
+</table>
+<div style="height: 20px;"></div>
+<h3 style="text-align: center;">KASA DEFTERİ ({{ total_revenue | intcomma }},00 TL)</h3>
+<table class="table table-dark">
+  <tbody>
+    <tr>
+      <th scope="col">Bugünkü Gelir :</th>
+      <td>{{ daily_revenue | intcomma }},00 TL</td>
+    </tr>
+    <tr>
+      <th scope="col">{{ current_month }} Ayı Geliri :</th>
+      <td>{{ monthly_revenue | intcomma }},00 TL</td>
+    </tr>
+    <tr>
+      <th scope="col">{{ current_year }} Yılı Geliri :</th>
+      <td>{{ yearly_revenue | intcomma }},00 TL</td>
+    </tr>
+  </tbody>
+</table>
+{% endblock content %}

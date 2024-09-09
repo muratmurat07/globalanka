@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-8">
+    <form action="" method="POST">
+      {% csrf_token %}
+
+      {% include 'corecode/form_snippet.html' %}
+
+      <input type="submit" class="btn btn-primary" value="Ödeme Al">
+
+    </form>
+  </div>
+
+  <div class="col-4">
+    <div class="alert alert-info" role="alert">
+      <h3>ÖDEME BİLGİLERİ</h3>
+      <p>{{invoice | upper}}</p>
+      <hr>
+      <ul>
+
+        <li>Eğitim Yılı: {{ invoice.session }}</li>
+        <li>Dönem: {{ invoice.term }}</li>
+        <li>Kursu: {{ invoice.class_for }}</li>
+        <li>Toplam Borç: {{invoice.total_amount_payable | intcomma }} TL </li>
+        <li>Ödenen Miktar: {{ invoice.total_amount_paid | intcomma }} TL</li>
+        <li><strong>Bakiye: {{invoice.balance | intcomma | intcomma }}</strong> TL </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock content %}

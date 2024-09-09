@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content-header %}
+<div class="card-header">
+  <div class="card-tools">
+    <a href="{% url 'musteri-update' object.id %}" class="btn btn-tool">
+      <i class="fas fa-edit"></i>
+    </a>
+    <a href="{% url 'musteri-delete' object.id %}" class="btn btn-tool">
+      <i class="fas fa-times"></i>
+    </a>
+  </div>
+</div>
+{% endblock content-header %}
+
+{% block content %}
+<!-- Müşteri Bilgileri ve Fotoğrafı -->
+<div class="card mb-4">
+  <div class="card-body">
+    <div class="row">
+      <!-- Fotoğraf Kısmı -->
+      <div class="col-sm-3 text-center">
+        {% if object.musteri_fotografi1 %}
+          <img
+            src="{{ object.musteri_fotografi1.url }}"
+            class="rounded-circle mb-3" style="width: 150px; height: 150px;">
+        {% else %}
+          <img
+            src="{% static 'dist/img/avatar.png' %}"
+            class="rounded-circle mb-3" style="width: 150px; height: 150px;">
+        {% endif %}
+      </div>
+      
+      <!-- Müşteri Bilgileri -->
+      <div class="col-sm-9">
+        <h3>{{ object.adi }} {{ object.soyadi }}</h3>
+        <p>
+          <strong>Cep Telefonu: </strong>{{ object.cep_numarasi }}<br>
+          <strong>Cinsiyet: </strong>{{ object.cinsiyet }}<br>
+          <strong>Adres: </strong>{{ object.adres }}<br>
+          <strong>Açıklama: </strong>{{ object.aciklama|linebreaks }}<br>
+          <strong>Müşteri Temsilcisi: </strong>{{ object.takip_eden }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- İşlemler Tablosu -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Yaptırdığı İşlemler</h3>
+  </div>
+  <div class="card-body">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Yapılan İşlem</th>
+          <th>İşlem Tarihi</th>
+          <th>İşlem Ücreti</th>
+          <th>Uzman</th>
+          <th>Müşteri Temsilcisi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for islem in islemler %}
+          <tr>
+            <td>{{ islem.islem_tipi }}</td>
+            <td>{{ islem.islem_tarihi }}</td>
+            <td>{{ islem.toplam_borc }}</td>
+            <td>{{ islem.islem_yapan }}</td>
+            <td>{{ islem.takip_eden }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5" class="text-center">Bu müşteri için işlem bulunmamaktadır.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Müşteri Fotoğrafları Carousel -->
+<div id="musteriFotograflariCarousel" class="carousel slide mb-4" data-ride="carousel">
+  <ol class="carousel-indicators">
+    {% if object.musteri_fotografi1 %}
+      <li data-target="#musteriFotograflariCarousel" data-slide-to="0" class="active"></li>
+    {% endif %}
+    {% if object.musteri_fotografi2 %}
+      <li data-target="#musteriFotograflariCarousel" data-slide-to="1"></li>
+    {% endif %}
+    {% if object.musteri_fotografi3 %}
+      <li data-target="#musteriFotograflariCarousel" data-slide-to="2"></li>
+    {% endif %}
+    {% if object.musteri_fotografi4 %}
+      <li data-target="#musteriFotograflariCarousel" data-slide-to="3"></li>
+    {% endif %}
+  </ol>
+  <div class="carousel-inner">
+    {% if object.musteri_fotografi1 %}
+      <div class="carousel-item active">
+        <img src="{{ object.musteri_fotografi1.url }}" class="d-block w-100" alt="Fotoğraf 1">
+      </div>
+    {% endif %}
+    {% if object.musteri_fotografi2 %}
+      <div class="carousel-item {% if not object.musteri_fotografi1 %}active{% endif %}">
+        <img src="{{ object.musteri_fotografi2.url }}" class="d-block w-100" alt="Fotoğraf 2">
+      </div>
+    {% endif %}
+    {% if object.musteri_fotografi3 %}
+      <div class="carousel-item {% if not object.musteri_fotografi1 and not object.musteri_fotografi2 %}active{% endif %}">
+        <img src="{{ object.musteri_fotografi3.url }}" class="d-block w-100" alt="Fotoğraf 3">
+      </div>
+    {% endif %}
+    {% if object.musteri_fotografi4 %}
+      <div class="carousel-item {% if not object.musteri_fotografi1 and not object.musteri_fotografi2 and not object.musteri_fotografi3 %}active{% endif %}">
+        <img src="{{ object.musteri_fotografi4.url }}" class="d-block w-100" alt="Fotoğraf 4">
+      </div>
+    {% endif %}
+  </div>
+  <a class="carousel-control-prev" href="#musteriFotograflariCarousel" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Önceki</span>
+  </a>
+  <a class="carousel-control-next" href="#musteriFotograflariCarousel" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Sonraki</span>
+  </a>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+  {% if taksit_degeri > 0 %}
+    {% for tarih in taksit_tarihleri %}
+    
+      {% if not forloop.first %}
+        <hr class="my-4" style="border-color: #007bff;">
+      {% endif %}
+    
+      <div class="container">
+        <div class="row">
+          <div class="col-3">
+            <img src="{% static 'dist/img/senet.png' %}" width="150" class="rounded float-left" alt="Senet Resmi">
+          </div>
+          <div class="col-9">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Ödeme Günü</th>
+                  <th scope="col">Türk Lirası</th>
+                  <th scope="col">Kuruş</th>
+                  <th scope="col">No</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  {% with taksit_lira=taksit_degeri|floatformat:0 taksit_kurus=taksit_degeri|floatformat:2|slice:"-2:" %}
+                  <th scope="row">{{ tarih }}</th>
+                  <td>{{ taksit_lira }} TL</td>
+                  <td>{{ taksit_kurus }}</td>
+                  <td>{{ forloop.counter }}</td>
+                  {% endwith %}
+                </tr>
+              </tbody>
+            </table>
+    
+            <p>
+              İş bu emre muharrer senedimin mukabilinde <strong>{{ tarih }}</strong> tarihinde Sayın <strong>{{ object.firstname }} {{ object.surname }}</strong> veyahut emruhavale yukarıda yazılı yalnız <strong># {{ taksit_degeri_words }} # </strong> ödeyeceğim bedeli nakten Ahzolunmuştur. İş bu bono vadesinde ödenmediği takdirde müteakip bonolarında muacceliyet kesbedeceğini, ihtilaf vukuunda Antalya Mahkemelerinin selahiyetini şimdiden kabul ederim.
+            </p>
+            <p>
+              <strong><h4>ÖDEYECEK</h4></strong>
+              <strong>Adı Soyadı :</strong> {{ object.firstname }} {{ object.surname }}<br/>
+              <strong>Adres :</strong> {{ object.address }}<br/>
+              <strong>Kefil :</strong> ...............................................<br/>
+              <strong>TC Kimlik No :</strong> {{ object.registration_number }}<br/>
+              <strong>Düzenlenme Tarihi :</strong> {{ object.date_of_admission }}<br/>
+            </p>
+          </div>
+        </div>
+        <br>
+      </div>
+    
+    {% endfor %}
+  {% else %}
+<h3>Taksit sayısı sıfır olduğu için Senet Yazdırılamadı. <strong>Senet Yazdırmak İstiyorsanız Taksit Sayısı Sıfırdan Farklı Olmalı! </strong></h3>
+  {% endif %}
+{% endblock content %}

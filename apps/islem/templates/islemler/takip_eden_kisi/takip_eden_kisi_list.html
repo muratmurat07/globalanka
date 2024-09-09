@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}MÜŞTERİ TEMSİLCİSİ{% endblock title %}
+
+{% block breadcrumb %}
+<a class="btn btn-primary" href="{% url 'takip-eden-kisi-create' %}"><i class="fas fa-plus"></i> Yeni Müşteri Temsilcisi</a>
+{% endblock breadcrumb %}
+
+{% block content %}
+  <div class="table-responsive">
+    <table id="islemtable" class="table table-bordered table-hover" data-page-length='100'>
+      <thead class="thead-light">
+        <tr>
+          <th>S/N</th>
+          <th>Adı Soyadı</th>
+          <th>Cep Telefonu</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for uzman in object_list %}
+          <tr class='clickable-row' data-href="{% url 'takip-eden-kisi-detail' uzman.id %}">
+            <td>{{ forloop.counter }}</td>
+            <td>{{ uzman.adi }} {{ uzman.soyadi }}</td>
+            <td>{{ uzman.cep_numarasi }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock content %}
+
+{% block morejs %}
+<script>
+  $('#islemtable').DataTable({
+    language: {
+      sEmptyTable: "Tabloda veri bulunmuyor",
+      sInfo: "_TOTAL_ kayıttan _START_ - _END_ arası görüntüleniyor",
+      sInfoEmpty: "Kayıt yok",
+      sInfoFiltered: "(_MAX_ kayıttan filtrelendi)",
+      sInfoPostFix: "",
+      sLengthMenu: "_MENU_ kayıt göster",
+      sLoadingRecords: "Yükleniyor...",
+      sProcessing: "İşleniyor...",
+      sSearch: "Ara:",
+      sZeroRecords: "Eşleşen kayıt bulunamadı",
+      oPaginate: {
+        sFirst: "İlk",
+        sLast: "Son",
+        sNext: "Sonraki",
+        sPrevious: "Önceki"
+      },
+      oAria: {
+        sSortAscending: ": artan sütun sıralamasını aktifleştir",
+        sSortDescending: ": azalan sütun sıralamasını aktifleştir"
+      }
+    }
+  });
+</script>
+{% endblock morejs %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content-header %}
+<div class="card-header">
+  <div class="card-tools">
+    <a href="{% url 'islem-update' object.id %}" class="btn btn-tool" title="Düzenle">
+      <i class="fas fa-edit"></i>
+    </a>
+    <a href="{% url 'islem-delete' object.id %}" class="btn btn-tool" title="Sil">
+      <i class="fas fa-times"></i>
+    </a>
+  </div>
+</div>
+{% endblock content-header %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="form-group border-bottom row">
+        <label class="col font-weight-bold">
+          İşlem Yapılan:
+        </label>
+        <div class="col">
+          {{ object.musteri }}  <!-- Doğru bir şekilde adı soyadı gösterme -->
+        </div>
+      </div>
+    <div class="form-group border-bottom row">
+        <label class="col font-weight-bold">
+          Yapılan İşlem:
+        </label>
+        <div class="col">
+          {{ object.islem_tipi}}  <!-- Doğru bir şekilde adı soyadı gösterme -->
+        </div>
+      </div>
+    <div class="form-group border-bottom row">
+      <label class="col font-weight-bold">
+        İşlem Yapan
+      </label>
+      <div class="col">
+        {{ object.islem_yapan}} 
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

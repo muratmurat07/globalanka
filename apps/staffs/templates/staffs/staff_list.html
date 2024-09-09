@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}PERSONELLER{% endblock title %}
+
+{% block breadcrumb %}
+<a class="btn btn-primary" href="{% url 'staff-create' %}"><i
+    class="fas fa-plus"></i> Yeni Personel</a>
+{% endblock breadcrumb %}
+
+{% block content %}
+  <table id="stafftable" class="table table-bordered table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th>S/N</th>
+        <th>Adı Soyadı</th>
+        <th>Cinsiyeti</th>
+        <th>Cep Telefonu</th>
+        <th>Durum</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for staff in object_list %}
+        <tr class='clickable-row' data-href="{% url 'staff-detail' staff.id %}">
+          <td>{{ forloop.counter }}</td>
+          <td>{{ staff.firstname }} {{ staff.surname }}</td>
+          <td>{{ staff.get_gender_display }}</td>
+          <td>{{ staff.mobile_number }}</td>
+          <td>{{ staff.get_current_status_display }}</td>
+        </tr>
+      {% endfor %}
+
+    </tbody>
+  </table>
+{% endblock content %}
+
+{% block morejs %}
+<script>
+   $('#stafftable').DataTable({
+     language: {
+       sEmptyTable: "Tabloda veri bulunmuyor",
+       sInfo: "_TOTAL_ kayıttan _START_ - _END_ arası görüntüleniyor",
+       sInfoEmpty: "Kayıt yok",
+       sInfoFiltered: "(_MAX_ kayıttan filtrelendi)",
+       sInfoPostFix: "",
+       sLengthMenu: "_MENU_ kayıt göster",
+       sLoadingRecords: "Yükleniyor...",
+       sProcessing: "İşleniyor...",
+       sSearch: "Ara:",
+       sZeroRecords: "Eşleşen kayıt bulunamadı",
+       oPaginate: {
+         sFirst: "İlk",
+         sLast: "Son",
+         sNext: "Sonraki",
+         sPrevious: "Önceki"
+       },
+       oAria: {
+         sSortAscending: ": artan sütun sıralamasını aktifleştir",
+         sSortDescending: ": azalan sütun sıralamasını aktifleştir"
+       }
+     }
+   });
+</script>
+{% endblock morejs %}

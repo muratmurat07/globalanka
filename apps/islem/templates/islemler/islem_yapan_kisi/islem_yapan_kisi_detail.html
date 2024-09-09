@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content-header %}
+<div class="card-header">
+  <div class="card-tools">
+    <a href="{% url 'islem-yapan-kisi-update' object.id %}" class="btn btn-tool" title="Düzenle">
+      <i class="fas fa-edit"></i>
+    </a>
+    <a href="{% url 'islem-yapan-kisi-delete' object.id %}" class="btn btn-tool" title="Sil">
+      <i class="fas fa-times"></i>
+    </a>
+  </div>
+</div>
+{% endblock content-header %}
+
+{% block content %}
+<div class="row">
+  <div class="col-sm-4">
+    <div>
+      <h3>{{ object }}</h3>  <!-- Adı Soyadı düzgün bir şekilde görüntülemek için -->
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="form-group border-bottom row">
+      <label class="col font-weight-bold">Adı Soyadı:</label>
+      <div class="col">{{ object }}</div>  <!-- Doğru bir şekilde adı soyadı gösterme -->
+    </div>
+    <div class="form-group border-bottom row">
+      <label class="col font-weight-bold">Cep Telefonu:</label>
+      <div class="col">{{ object.cep_numarasi|default:"Bilgi yok" }}</div> <!-- Bilgi eksikse varsayılan değer -->
+    </div>
+  </div>
+</div>
+<!-- Ay Seçim Formu -->
+<div class="row">
+  <div class="col-sm-6">
+    <form method="get" action="{% url 'islem-yapan-kisi-detail' object.id %}">
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Filtrele</button>
+    </form>
+  </div>
+</div>
+<!-- İşlemler Tablosu -->
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Yaptırdığı İşlemler</h3>
+  </div>
+  <div class="card-body">
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Müşteri</th>
+          <th>Yapılan İşlem</th>
+          <th>İşlem Tarihi</th>
+          <th>İşlem Ücreti</th>
+          <th>İşlemden Kazanılan</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for islem in islemler %}
+          <tr>
+            <td>{{ islem.musteri }}</td>
+            <td>{{ islem.islem_tipi }}</td> 
+            <td>{{ islem.islem_tarihi }}</td>
+            <td>{{ islem.toplam_borc | intcomma }}</td> <!-- İşlem maliyeti -->
+            <td>{{ islem.islem_yapan_komisyonu | intcomma }}</td> <!-- İşlem yapan kişinin komisyonu -->
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="6" class="text-center">Bu kişi için işlem bulunmamaktadır.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock content %}

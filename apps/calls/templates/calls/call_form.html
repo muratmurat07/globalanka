@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+
+  {% if object %}
+ {{ object }}'In bilgilerini güncelliyorsunuz.
+  {% else %}
+    Yeni Görüşme Ekle
+  {% endif %}
+
+{% endblock title %}
+
+
+{% block content %}
+
+<form action="" method="POST">
+  {% csrf_token %}
+
+  {% include 'corecode/form_snippet.html' %}
+
+  {% if object %}
+    <input type="submit" class="btn btn-primary" value="Görüşme Güncelle">
+  {% else %}
+    <input type="submit" class="btn btn-primary" value="Görüşme Ekle">
+  {% endif %}
+</form>
+
+
+{% endblock content %}
